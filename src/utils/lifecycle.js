@@ -1,6 +1,8 @@
 const onMount = (fn = () => { }) => {
   window.addEventListener('DOMContentLoaded', () => {
-    fn();
+    setTimeout(() => {
+      fn();
+    }, 0);
   });
 };
 
