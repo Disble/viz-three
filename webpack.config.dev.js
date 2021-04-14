@@ -21,6 +21,7 @@ module.exports = {
       '@templates': path.resolve(__dirname, 'src', 'templates'),
       '@styles': path.resolve(__dirname, 'src', 'styles'),
       '@images': path.resolve(__dirname, 'src', 'assets', 'images'),
+      '@csv': path.resolve(__dirname, 'src', 'assets', 'csv'),
     }
   },
   module: {
@@ -77,6 +78,14 @@ module.exports = {
         {
           from: path.resolve(__dirname, 'src', 'assets', 'images'),
           to: path.join('assets', 'images')
+        }
+      ]
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src', 'assets', 'csv'),
+          to: path.join('assets', 'csv')
         }
       ]
     }),
