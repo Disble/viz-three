@@ -102,14 +102,11 @@ body {
   width: 100vw;
   height: 100vh;
 }
-.plot-container {
-  position: relative;
-  width: 100px;
-}
 .plot {
   height: 235px;
 }
 .column-left {
+  display: block;
   width: 70vw;
   height: 100vh;
   overflow-y: auto;
@@ -148,9 +145,14 @@ body {
 .has-align-items-center {
   align-items: center;
 }
+/* Plotly */
 .stats-original{
   height: 450px;
-  width: 100%;
+  width: 98%;
+}
+.plot-50 {
+  display: inline-block;
+  width: 49%;
 }
 @media screen and (max-width: 1023px) {
   /*  */

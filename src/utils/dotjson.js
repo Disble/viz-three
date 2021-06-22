@@ -4,8 +4,8 @@ import DotCSV from './dotcsv.js';
  * Clase DotJSON
  */
 export default class DotJSON extends DotCSV {
-  constructor({ dataset, labels: { x, y, z } }) {
-    super(dataset, [x, y, z]);
+  constructor(dataset, labels) {
+    super(dataset, labels);
   }
 
   /**

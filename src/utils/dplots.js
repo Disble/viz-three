@@ -6,20 +6,22 @@ import utils from './api-request.js';
 // shereLabel.csv plotear en 3D
 const dplots = async ({ kernel } = {}) => {
   console.log("✨ kernel", kernel);
-  if (kernel === undefined) return;
+  // if (kernel === undefined) return;
   // const jsonTest = await utils.jsonRequest(`http://186.71.197.203:8000/api/kcmds?k1=${kernel.yellow}&k2=${kernel.green}&k3=${kernel.blue}&k4=${kernel.red}`);
-  const jsonTest = await utils.jsonRequest(`http://localhost:8000/kcmds`);
+  // const jsonTest = await utils.jsonRequest(`http://localhost:8000/kcmds`);
 
-  console.log('📋 jsonTest', jsonTest);
+  // console.log('📋 jsonTest', jsonTest);
 
   const sphere2DCSV = await utils.csvRequest('/assets/csv/MDSRDLabeled.csv');
-  const sphere3DCSV = await utils.csvRequest('/assets/csv/sphereLabel.csv');
+  const sphere3DCSV = await utils.csvRequest('/assets/csv/Iris.csv');
 
+  console.log('🎋 sphere2DCSV', sphere2DCSV);
   console.log('🎄 sphere3DCSV', sphere3DCSV);
 
   const sphere2D = new DotCSV(sphere2DCSV, ['X', 'Y']);
-  const sphere3DOriginal = new DotCSV(sphere3DCSV, ['X', 'Y', 'Z']);
-  const sphere3DNew = new DotJSON({ dataset: jsonTest, labels: { x: 'x', y: 'y', z: 'z' } });
+  const sphere3DOriginal = new DotCSV(sphere3DCSV, ['sepal length', 'sepal width', 'petal length']);
+  const sphere3DNew = sphere3DOriginal;
+  // const sphere3DNew = new DotJSON({ dataset: jsonTest, labels: { x: 'x', y: 'y', z: 'z' } });
 
   const trace1 = {
     x: sphere3DNew.x,
@@ -27,7 +29,7 @@ const dplots = async ({ kernel } = {}) => {
     z: sphere3DNew.z,
     marker: {
       size: 2,
-      color: sphere3DNew.getColors('labels'),
+      color: sphere3DNew.getColors('petal width'),
       colorscale: 'Reds',
       line: { color: 'transparent' }
     },
@@ -63,7 +65,7 @@ const dplots = async ({ kernel } = {}) => {
   const layout = {
     paper_bgcolor: 'white',
     title: 'Reducción de dimensiones',
-    font: { color: 'rgb(42 59 71)', family: 'Open Sans' },
+    font: { color: 'rgb(42, 59, 71)', family: 'Open Sans' },
     grid: {
       rows: 1,
       columns: 2,
@@ -86,7 +88,7 @@ const dplots = async ({ kernel } = {}) => {
       text: "Reducción de dimensiones a 3D",
       font: {
         size: 16,
-        color: 'green',
+        color: 'gray',
       },
       showarrow: false,
       align: 'center',
@@ -99,7 +101,7 @@ const dplots = async ({ kernel } = {}) => {
       text: "Reducción de dimensiones a 2D",
       font: {
         size: 16,
-        color: 'orange',
+        color: 'gray',
       },
       showarrow: false,
       align: 'center',

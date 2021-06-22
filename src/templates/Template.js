@@ -2,9 +2,8 @@
 import { onMount } from '../utils/lifecycle.js';
 import control3dThree from '@utils/control3d.js';
 import frontEndController from '../utils/frontend.controller.js';
-import dplots from '../utils/dplots.js';
 import dstats from '../utils/dstats.js';
-import dplotapi from '../utils/dplotapi.js';
+import plotter from '../utils/plotter.js';
 
 const Template = async () => {
 
@@ -24,9 +23,41 @@ const Template = async () => {
   ];
 
   onMount(() => {
-    dplots();
-    // dstats();
-    dplotapi();
+    plotter({
+      dimension: 3,
+      path: '/assets/csv/sphereLabel.csv',
+      container: 'plot-reduction-original',
+      labels: { axis: ['X', 'Y', 'Z'], color: 'Label' },
+      options: { title: 'Original' }
+    });
+    plotter({
+      dimension: 3,
+      path: 'http://localhost:8000/kcmds',
+      container: 'plotter',
+      labels: { axis: ['x', 'y', 'z'], color: 'labels' },
+      options: { title: 'By JSON API', useJson: true }
+    });
+    plotter({
+      dimension: 2,
+      path: '/assets/csv/MDSRDLabeled.csv',
+      container: 'plotter-2D',
+      labels: { axis: ['X', 'Y'] },
+      options: { title: '2D Plot' }
+    });
+    plotter({
+      dimension: 3,
+      path: '/assets/csv/Iris.csv',
+      container: 'plot-reduction-3D',
+      labels: { axis: ['sepal length', 'sepal width', 'petal length'], color: 'petal width' },
+      options: { title: 'Iris Flower' }
+    });
+    plotter({
+      dimension: 2,
+      path: '/assets/csv/MDSRDLabeled.csv',
+      container: 'plot-reduction',
+      labels: { axis: ['X', 'Y'] },
+      options: { title: 'plot reduction 2D' }
+    });
     control3dThree({ updateStats: frontEndController.updateStats, colors: colorSides });
   });
 
@@ -39,14 +70,10 @@ const Template = async () => {
           id="plot-reduction-original"
           class="stats-original"
           ></div>
-          <div class="plot has-flex has-align-items-center">
-            <div class="loader plot">Loading...</div>
-            <div class="loader plot">Loading...</div>
-          </div>
-          <div class="plot has-flex has-align-items-center">
-            <div class="loader plot">Loading...</div>
-            <div class="loader plot">Loading...</div>
-          </div>
+          <div id="plotter" class="plot-50"></div>
+          <div id="plot-reduction-3D" class="plot-50"></div>
+          <div id="plot-reduction" class="plot-50"></div>
+          <div id="plotter-2D" class="plot-50"></div>
         </div>
         <div class="column-right">
           <div
