@@ -1,8 +1,6 @@
 // Aquí van las importaciones
 import { onMount } from '../utils/lifecycle.js';
 import control3dThree from '@utils/control3d.js';
-import frontEndController from '../utils/frontend.controller.js';
-import dstats from '../utils/dstats.js';
 import plotter from '../utils/plotter.js';
 
 const Template = async () => {
@@ -58,7 +56,7 @@ const Template = async () => {
       labels: { axis: ['X', 'Y'] },
       options: { title: 'plot reduction 2D' }
     });
-    control3dThree({ updateStats: frontEndController.updateStats, colors: colorSides });
+    control3dThree({ colors: colorSides });
   });
 
 
