@@ -135,6 +135,10 @@ body {
   grid-column: xi / x1;
   grid-row: y4 / yf;
 }
+.align-loader {
+  position: relative;
+  top: -200px;
+}
 .item {
   background: white;
 }
@@ -145,6 +149,9 @@ body {
 .has-align-items-center {
   align-items: center;
 }
+.has-justify-space-between {
+  justify-content: space-between;
+}
 /* Plotly */
 .stats-original{
   height: 450px;
@@ -153,6 +160,10 @@ body {
 .plot-50 {
   display: inline-block;
   width: 49%;
+}
+.plot-40 {
+  display: inline-block;
+  width: 39%;
 }
 @media screen and (max-width: 1023px) {
   /*  */
@@ -169,6 +180,15 @@ canvas { margin: 0; padding: 0; width: 100%; height: 100%; font-size: 0; }
 }
 .mb-4 {
   margin-bottom: 20px;
+}
+.mt-4 {
+  margin-top: 20px;
+}
+.mt-1 {
+  margin-top: 5px;
+}
+.mr-3 {
+  margin-right: 15px;
 }
 /* Spinner */
 .loader,
@@ -323,4 +343,13 @@ label {
 
 .select + label {
   margin-top: 2rem;
+}
+
+/* CUSTOM INPUT */
+.custom-number {
+  height: 32px;
+  border-radius: 0.25em;
+  border: 1px solid var(--select-border);
+  font-size: 1.25rem;
+  max-width: 99%;
 }

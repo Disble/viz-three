@@ -3,7 +3,7 @@ import * as THREE from 'three/build/three.module';
 
 console.log('🎊 Control3D');
 
-const control3dThree = ({ updateStats, generateStats = () => { }, colors = [] }) => {
+const control3dThree = ({ generateStats = () => { }, colors = [], errorThreshold }) => {
   const nameContainer = 'three-control';
   const elContainer = document.getElementById(nameContainer);
   const elContainerWidth = elContainer.offsetWidth;
@@ -183,12 +183,14 @@ const control3dThree = ({ updateStats, generateStats = () => { }, colors = [] })
     const angleValues = mesh.geometry.faces.map(face => face.normal.dot(dirToCamera));
     // calc angles percentages
     const anglesPercentage = calcIndexDode({ angles: angleValues });
+    generateStats({ faces: anglesPercentage })
     // clean labels from colors
     colors.forEach(color => document.getElementById(color.name).innerText = '');
     // print labels with new percentages
     anglesPercentage.forEach(angle => {
-      console.log('🎹 resp', angle);
-      document.getElementById(angle.color).innerText = angle.facePercentage100.toFixed(2) + '%';
+      // console.log('🎹 resp', angle);
+      if (angle.facePercentage100 > 0)
+        document.getElementById(angle.color).innerText = angle.facePercentage100.toFixed(2) + '%';
     });
 
     isDragging = false;
@@ -239,88 +241,38 @@ const control3dThree = ({ updateStats, generateStats = () => { }, colors = [] })
 
   renderer.domElement.addEventListener('mouseup', handleCalc);
 
-  // Calculor de indices de faces RD
-  function calcIndex(angleValueFaceYellow, angleValueFaceGreen, angleValueFaceBlue, angleValueFaceRed) {
-    // De momento 6.71% de error
-    // R: 93.29% B: 6.71% G: 0% Y: 0%
-    // Cuando se ve un 100% de cara Roja
-    // R: 6.82% B: 45.05% G: 48.13% Y: 0%
-    // Solo se ve azul y verde
-    let angleValueTotal = 0;
-    let faceYellow = false;
-    let faceGreen = false;
-    let faceBlue = false;
-    let faceRed = false;
-    let facePercentageYellow = 0.0;
-    let facePercentageGreen = 0.0;
-    let facePercentageBlue = 0.0;
-    let facePercentageRed = 0.0;
-
-    if (angleValueFaceYellow >= 0) {
-      angleValueTotal += angleValueFaceYellow;
-      faceYellow = true;
-    }
-    if (angleValueFaceGreen >= 0) {
-      angleValueTotal += angleValueFaceGreen;
-      faceGreen = true;
-    }
-    if (angleValueFaceBlue >= 0) {
-      angleValueTotal += angleValueFaceBlue;
-      faceBlue = true;
-    }
-    if (angleValueFaceRed >= 0) {
-      angleValueTotal += angleValueFaceRed;
-      faceRed = true;
-    }
-
-    if (faceYellow) facePercentageYellow = angleValueFaceYellow / angleValueTotal;
-    if (faceGreen) facePercentageGreen = angleValueFaceGreen / angleValueTotal;
-    if (faceBlue) facePercentageBlue = angleValueFaceBlue / angleValueTotal;
-    if (faceRed) facePercentageRed = angleValueFaceRed / angleValueTotal;
-
-    return {
-      yellow: facePercentageYellow,
-      green: facePercentageGreen,
-      blue: facePercentageBlue,
-      red: facePercentageRed
-    }
-  }
-
   function calcIndexDode({ angles }) {
-    const angleBools = [];
-    let angleValueTotal = 0;
-
-    for (const angle of angles) {
-      if (angle > 0) {
-        angleValueTotal += angle;
-        angleBools.push(true);
-      } else {
-        angleBools.push(false);
-      }
-    }
-
     const sides = [];
     let sideFaces = [];
     let counterSides = 0;
+    let angleValueTotal = 0;
+
+    for (const angle of angles) if (angle > 0) angleValueTotal += angle; // valor del total de las caras
 
     for (const i in angles) {
       if (Object.hasOwnProperty.call(angles, i)) {
-        if (angleBools[i]) {
           sideFaces.push(angles[i] / angleValueTotal); // array en tripletas
           if ((i + 1) % 3 === 0) {
             const facePercentageRaw = sideFaces.reduce((a, b) => a + b); // sobre 1
             const facePercentage100 = facePercentageRaw * 100; // sobre el 100%
-            if (facePercentage100 > 8.0) { // no se muestra a menos que pase cierto umbral
+            console.log('👌 errorThreshold', errorThreshold);
+            if (facePercentage100 > errorThreshold.value) { // no se muestra a menos que pase cierto umbral
               sides.push({
                 faces: sideFaces,
                 facePercentage: facePercentageRaw,
                 facePercentage100: facePercentage100,
                 color: colors[counterSides].name
               });
+            } else {
+              sides.push({
+                faces: sideFaces,
+                facePercentage: 0,
+                facePercentage100: 0,
+                color: colors[counterSides].name
+              });
             }
             sideFaces = [];
           }
-        }
         if ((i + 1) % 3 === 0) counterSides++;
       }
     }
