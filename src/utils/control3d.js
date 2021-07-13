@@ -1,8 +1,6 @@
 // ARCHIVO QUE CONTIENE UN TETRAHEDRON CON THREE.JS
 import * as THREE from 'three/build/three.module';
 
-console.log('🎊 Control3D');
-
 const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
   const nameContainer = 'three-control';
   const elContainer = document.getElementById(nameContainer);
@@ -37,7 +35,7 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
   const radius = 1.5;
 
   const geometry = new THREE.DodecahedronGeometry(radius);
-  console.log('😀 faces', geometry.faces.length);
+  // console.log('😀 faces', geometry.faces.length);
 
   // Side 1
   geometry.faces[0].color.setHex(colors[0].hex);
@@ -165,7 +163,7 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
   });
   // 🐡
   const handleCalc = e => {
-    console.log('🀄 mesh up', mesh);
+    // console.log('🀄 mesh up', mesh);
     //////////////////////////////////--begin--////////////////////////////////////////////
     /* camera position and normal vector of each face    */
     //mesh.geometry.computeFaceNormals()
@@ -275,7 +273,7 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
         if ((i + 1) % 3 === 0) counterSides++;
       }
     }
-    console.log('🧂', sides);
+    // console.log('🧂', sides);
     return sides;
   }
 
