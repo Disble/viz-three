@@ -3,7 +3,7 @@ import * as THREE from 'three/build/three.module';
 
 console.log('🎊 Control3D');
 
-const control3dThree = ({ generateStats = () => { }, colors = [], errorThreshold }) => {
+const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
   const nameContainer = 'three-control';
   const elContainer = document.getElementById(nameContainer);
   const elContainerWidth = elContainer.offsetWidth;
@@ -255,8 +255,7 @@ const control3dThree = ({ generateStats = () => { }, colors = [], errorThreshold
           if ((i + 1) % 3 === 0) {
             const facePercentageRaw = sideFaces.reduce((a, b) => a + b); // sobre 1
             const facePercentage100 = facePercentageRaw * 100; // sobre el 100%
-            console.log('👌 errorThreshold', errorThreshold);
-            if (facePercentage100 > errorThreshold.value) { // no se muestra a menos que pase cierto umbral
+            if (facePercentage100 > 8.0) { // no se muestra a menos que pase cierto umbral
               sides.push({
                 faces: sideFaces,
                 facePercentage: facePercentageRaw,

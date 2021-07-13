@@ -29,10 +29,10 @@ const plotter = async ({ dimension = 2, path, labels, container = 'plotter', opt
   if (useLoader || useJson) addLoader(container);
   // Get data
   const dataRaw = useJson ? await utils.jsonRequest(path) : await utils.csvRequest(path);
-  console.log('🎋 dataRaw', dataRaw);
+  // console.log('🎋 dataRaw', dataRaw);
   // Process data
   const dataProcess = useJson ? new DotJSON(dataRaw, axis) : new DotCSV(dataRaw, axis);
-  console.log('🎍 dataProcess', dataProcess);
+  // console.log('🎍 dataProcess', dataProcess);
   // Init plot
   let trace = {};
   // Validate dimension
