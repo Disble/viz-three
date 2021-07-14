@@ -123,6 +123,9 @@ body {
   width: 30vw;
   height: 300px;
 }
+canvas {
+  cursor: pointer;
+}
 .block-color {
   width: 120px;
   margin-right: 20px;

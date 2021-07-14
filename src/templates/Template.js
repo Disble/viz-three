@@ -81,14 +81,16 @@ const Template = async () => {
             id="three-control"
             class="control-3d mb-6"
           ></div>
-          ${colorSides.map(color => (/*html*/`
-            <div class="has-flex">
-              <div class="block-color" style="background-color: ${color.hexStr};">
-                ${color.name}
+          <div class="mb-6">
+            ${colorSides.map(color => (/*html*/`
+              <div class="has-flex">
+                <div class="block-color" style="background-color: ${color.hexStr};">
+                  ${color.name}
+                </div>
+                <div id="${color.name}"></div>
               </div>
-              <div id="${color.name}"></div>
-            </div>
-          `)).join('')}
+            `)).join('')}
+          </div>
         </div>
       </div>
     </div>

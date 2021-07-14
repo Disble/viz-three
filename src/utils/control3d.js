@@ -35,7 +35,6 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
   const radius = 1.5;
 
   const geometry = new THREE.DodecahedronGeometry(radius);
-  // console.log('😀 faces', geometry.faces.length);
 
   // Side 1
   geometry.faces[0].color.setHex(colors[0].hex);
@@ -131,13 +130,21 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
   // #######################
   // INTENTO DE ROTACION EN 3D
   let isDragging = false;
+  let isDraggingTouch = false;
   let previousMousePosition = {
     x: 0,
     y: 0
   };
+  let previousTouchPosition = {
+    x: 0,
+    y: 0
+  };
   // 🐟
-  renderer.domElement.addEventListener('mousedown', e => {
-    isDragging = true;
+  renderer.domElement.addEventListener('mousedown', () => isDragging = true);
+  renderer.domElement.addEventListener('touchstart', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    isDraggingTouch = true
   });
   // 🐠
   renderer.domElement.addEventListener('mousemove', e => {
@@ -148,11 +155,11 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
 
     if (isDragging && isLeftClick(e)) {
       if (e.ctrlKey === true) {
-        mesh.geometry.rotateZ(toRadians(-deltaMove.x * 1));
-        mesh.geometry.rotateZ(toRadians(-deltaMove.y * 1));
+        mesh.geometry.rotateZ(toRadians(deltaMove.x));
+        mesh.geometry.rotateZ(toRadians(deltaMove.y));
       } else {
-        mesh.geometry.rotateY(toRadians(deltaMove.x * 1));
-        mesh.geometry.rotateX(toRadians(deltaMove.y * 1));
+        mesh.geometry.rotateY(toRadians(deltaMove.x));
+        mesh.geometry.rotateX(toRadians(deltaMove.y));
       }
     }
 
@@ -161,62 +168,29 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
       y: e.offsetY
     };
   });
+  renderer.domElement.addEventListener('touchmove', e => {
+    const x = e.targetTouches[0].clientX;
+    const y = e.targetTouches[0].clientY;
+    // console.log('🐡 handleRotateMesh', e.targetTouches[0], e.targetTouches[0]);
+    // console.log('🦐 xy', x, y);
+    const deltaMove = {
+      x: x - previousTouchPosition.x,
+      y: y - previousTouchPosition.y
+    };
+    if (isDraggingTouch && e.touches.length > 0) {
+      mesh.geometry.rotateY(toRadians(deltaMove.x));
+      mesh.geometry.rotateX(toRadians(deltaMove.y));
+    }
+
+    previousTouchPosition = {
+      x: x,
+      y: y
+    };
+  });
   // 🐡
-  const handleCalc = e => {
-    // console.log('🀄 mesh up', mesh);
-    //////////////////////////////////--begin--////////////////////////////////////////////
-    /* camera position and normal vector of each face    */
-    //mesh.geometry.computeFaceNormals()
-    // console.log('↗ faces', mesh.geometry.faces);
-    // direction to the camera,  dir = cameraPosition - Position of the figure
-    const dirToCamera = newCamera.position.clone().sub(mesh.position);
-    dirToCamera.normalize();
-
-    // console.log('↗ dirToCamera', dirToCamera);
-    // console.log('↗ newCamera.position', newCamera.position);
-    // console.log('↗ camera.position', camera.position);
-    // console.log('↗ mesh.position', mesh.position);
-
-    // dot product of the to vectors
-    const angleValues = mesh.geometry.faces.map(face => face.normal.dot(dirToCamera));
-    // calc angles percentages
-    const anglesPercentage = calcIndexDode({ angles: angleValues });
-    generateStats({ faces: anglesPercentage })
-    // clean labels from colors
-    colors.forEach(color => document.getElementById(color.name).innerText = '');
-    // print labels with new percentages
-    anglesPercentage.forEach(angle => {
-      // console.log('🎹 resp', angle);
-      if (angle.facePercentage100 > 0)
-        document.getElementById(angle.color).innerText = angle.facePercentage100.toFixed(2) + '%';
-    });
-
-    isDragging = false;
-  }
-
-  const rotateWithArrows = e => {
-    const arrowKeys = {
-      ArrowUp: () => mesh.geometry.rotateX(-0.01),
-      ArrowLeft: () => mesh.geometry.rotateY(-0.01),
-      ArrowDown: () => mesh.geometry.rotateX(0.01),
-      ArrowRight: () => mesh.geometry.rotateY(0.01)
-    };
-    const handleArrow = arrowKeys[e.key];
-    if (handleArrow) return handleArrow();
-  }
-
-  const rotateWithArrowsCtrl = e => {
-    const arrowKeys = {
-      ArrowUp: () => mesh.geometry.rotateZ(-0.01),
-      ArrowLeft: () => mesh.geometry.rotateZ(0.01),
-      ArrowDown: () => mesh.geometry.rotateZ(0.01),
-      ArrowRight: () => mesh.geometry.rotateZ(-0.01)
-    };
-    const handleArrow = arrowKeys[e.key];
-    if (handleArrow) return handleArrow();
-  }
-
-
+  renderer.domElement.addEventListener('mouseup', handleCalc);
+  renderer.domElement.addEventListener('touchend', handleCalc);
+  // 🦐
   document.addEventListener('keyup', e => {
     let isExec = false;
     if (e.ctrlKey === true) {
@@ -236,8 +210,50 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
       }
     }
   });
+  // 🦞
+  function handleCalc() {
+    // console.log('🀄 mesh up', mesh);
+    // direction to the camera,  dir = cameraPosition - Position of the figure
+    const dirToCamera = newCamera.position.clone().sub(mesh.position);
+    dirToCamera.normalize();
+    // dot product of the to vectors
+    const angleValues = mesh.geometry.faces.map(face => face.normal.dot(dirToCamera));
+    // calc angles percentages
+    const anglesPercentage = calcIndexDode({ angles: angleValues });
+    generateStats({ faces: anglesPercentage })
+    // clean labels from colors
+    colors.forEach(color => document.getElementById(color.name).innerText = '');
+    // print labels with new percentages
+    anglesPercentage.forEach(angle => {
+      // console.log('🎹 resp', angle);
+      if (angle.facePercentage100 > 0)
+        document.getElementById(angle.color).innerText = angle.facePercentage100.toFixed(2) + '%';
+    });
 
-  renderer.domElement.addEventListener('mouseup', handleCalc);
+    isDragging = false;
+  }
+
+  function rotateWithArrows(e) {
+    const arrowKeys = {
+      ArrowUp: () => mesh.geometry.rotateX(-0.01),
+      ArrowLeft: () => mesh.geometry.rotateY(-0.01),
+      ArrowDown: () => mesh.geometry.rotateX(0.01),
+      ArrowRight: () => mesh.geometry.rotateY(0.01)
+    };
+    const handleArrow = arrowKeys[e.key];
+    if (handleArrow) return handleArrow();
+  }
+
+  function rotateWithArrowsCtrl(e) {
+    const arrowKeys = {
+      ArrowUp: () => mesh.geometry.rotateZ(-0.01),
+      ArrowLeft: () => mesh.geometry.rotateZ(0.01),
+      ArrowDown: () => mesh.geometry.rotateZ(0.01),
+      ArrowRight: () => mesh.geometry.rotateZ(-0.01)
+    };
+    const handleArrow = arrowKeys[e.key];
+    if (handleArrow) return handleArrow();
+  }
 
   function calcIndexDode({ angles }) {
     const sides = [];
@@ -276,10 +292,8 @@ const control3dThree = ({ generateStats = () => { }, colors = [] }) => {
     // console.log('🧂', sides);
     return sides;
   }
-
-
   // #######################
-  const render = () => {
+  function render() {
     // Renderiza en pantalla la escena y la cámara
     renderer.render(scene, renderCamera);
     requestAnimationFrame(render);
