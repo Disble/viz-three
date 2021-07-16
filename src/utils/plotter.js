@@ -20,6 +20,8 @@ function removeLoader(container) {
  * Renderiza una sola grafica.
  */
 const plotter = async ({ dimension = 2, path, labels, container = 'plotter', options }) => {
+  // log all pararameters
+  // console.log('plotter', { dimension, path, labels, container, options });
   // Validate minimal properties
   if (!path || !labels) return;
   // Extract properties
