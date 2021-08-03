@@ -6,6 +6,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -93,7 +94,10 @@ module.exports = {
       ]
     }),
     new Dotenv(),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new webpack.ProvidePlugin({
+      process: 'process/browsesr',
+    }),
   ],
   optimization: {
     minimize: true,

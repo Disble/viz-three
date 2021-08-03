@@ -1,4 +1,3 @@
-require('dotenv').config();
 import Template from '@templates/Template.js';
 import '@styles/main.css';
 
