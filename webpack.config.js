@@ -96,7 +96,7 @@ module.exports = {
     new Dotenv(),
     new CleanWebpackPlugin(),
     new webpack.ProvidePlugin({
-      process: 'process/browsesr',
+      process: 'process/browser',
     }),
   ],
   optimization: {
