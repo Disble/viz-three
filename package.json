@@ -4,7 +4,7 @@
   "description": "A webpack 5 template for JS, CSS, HTML",
   "main": "index.js",
   "scripts": {
-    "build": "node ./scripts/create-env.js && webpack --mode production --config webpack.config.js",
+    "build": "webpack --mode production --config webpack.config.js",
     "build:watch": "webpack --watch --config webpack.config.js",
     "dev": "webpack --host 0.0.0.0 --config webpack.config.dev.js",
     "dev:rm": "rm -rf dist & npm run dev",
