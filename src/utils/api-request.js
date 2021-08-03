@@ -11,7 +11,7 @@ export default {
   },
 
   jsonRequest: async (path) => {
-    // console.log('💔', path);
+    console.log('💔', path);
     const res = await fetch(path)
     const json = res.json();
     return json;
