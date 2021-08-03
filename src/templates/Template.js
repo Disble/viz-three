@@ -7,6 +7,8 @@ const Template = async () => {
 
   const URL_API = process.env.URL_API;
 
+  // console.log(URL_API);
+
   const colorSides = [
     { name: 'Victoria', hex: 0x564787, hexStr: '#564787' },
     { name: 'Lola', hex: 0xDBCBD8, hexStr: '#DBCBD8' },
@@ -39,14 +41,14 @@ const Template = async () => {
           path: `${URL_API}/api/kernel_join?alfa_1=${kernel[0]}&alfa_2=${kernel[1]}&alfa_3=${kernel[2]}&alfa_4=${kernel[3]}&alfa_5=${kernel[4]}&alfa_6=${kernel[5]}&alfa_7=${kernel[6]}&alfa_8=${kernel[7]}&alfa_9=${kernel[8]}&alfa_10=${kernel[9]}&alfa_11=${kernel[10]}&alfa_12=${kernel[11]}&num_dim=${3}`,
           container: 'plot-3D',
           labels: { axis: ['x', 'y', 'z'], color: 'labels' },
-          options: { title: 'Reducción de dimensiones', useJson: true }
+          options: { title: 'Reducción de dimensiones en 3D', useJson: true, randomColor: true }
         });
         plotter({
           dimension: 2,
           path: `${URL_API}/api/kernel_join?alfa_1=${kernel[0]}&alfa_2=${kernel[1]}&alfa_3=${kernel[2]}&alfa_4=${kernel[3]}&alfa_5=${kernel[4]}&alfa_6=${kernel[5]}&alfa_7=${kernel[6]}&alfa_8=${kernel[7]}&alfa_9=${kernel[8]}&alfa_10=${kernel[9]}&alfa_11=${kernel[10]}&alfa_12=${kernel[11]}&num_dim=${3}`,
           container: 'plot-2D',
           labels: { axis: ['x', 'y', 'z'], color: 'labels' },
-          options: { title: 'Reducción de dimensiones', useJson: true }
+          options: { title: 'Reducción de dimensiones en 2D', useJson: true, randomColor: true }
         });
       }
     });
@@ -122,9 +124,9 @@ const Template = async () => {
             class="control-3d mb-6"
           ></div>
           <div class="mb-6">
-            ${colorSides.map(color => (/*html*/`
+            ${colorSides.map((color, i) => (/*html*/`
               <div class="has-flex">
-                <div class="block-color" style="background-color: ${color.hexStr};">
+                <div class="block-color" style="background-color: ${color.hexStr}; ${i === 1 ? 'color: black;' : ''}">
                   ${color.name}
                 </div>
                 <div id="${color.name}"></div>

@@ -26,7 +26,7 @@ const plotter = async ({ dimension = 2, path, labels, container = 'plotter', opt
   if (!path || !labels) return;
   // Extract properties
   const { axis, color } = labels;
-  const { useJson = false, title = '', useLoader = false } = options;
+  const { useJson = false, title = '', useLoader = false, randomColor = false } = options;
   // Add loader if is necesary
   if (useLoader || useJson) addLoader(container);
   // Get data
@@ -52,7 +52,7 @@ const plotter = async ({ dimension = 2, path, labels, container = 'plotter', opt
           width: 0.5
         },
         opacity: 0.8,
-        color: color ? dataProcess.getColors(color) : 'gray',
+        color: color ? dataProcess.getColors(color, randomColor) : 'gray',
       },
       // hovertext: sphere2D.getColors('Label'),
       showlegend: false,
@@ -65,7 +65,7 @@ const plotter = async ({ dimension = 2, path, labels, container = 'plotter', opt
       z: dataProcess.z,
       marker: {
         size: 2,
-        color: color ? dataProcess.getColors(color) : 'gray',
+        color: color ? dataProcess.getColors(color, randomColor) : 'gray',
         colorscale: 'Reds',
         line: { color: 'transparent' }
       },
