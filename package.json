@@ -34,6 +34,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "plotly.js-dist": "^1.58.4",
     "three": "^0.121.1"
   }

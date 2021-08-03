@@ -7,7 +7,7 @@ const Template = async () => {
 
   const URL_API = process.env.URL_API;
 
-  console.log(process.env);
+  console.log(process);
   console.log(URL_API);
 
   const colorSides = [
