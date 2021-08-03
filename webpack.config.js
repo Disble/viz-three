@@ -95,9 +95,7 @@ module.exports = {
     }),
     new Dotenv(),
     new CleanWebpackPlugin(),
-    new webpack.ProvidePlugin({
-      process: 'process/browser',
-    }),
+    new webpack.EnvironmentPlugin(['URL_API'])
   ],
   optimization: {
     minimize: true,
