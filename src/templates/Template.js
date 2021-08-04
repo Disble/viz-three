@@ -7,8 +7,6 @@ const Template = async () => {
 
   const URL_API = process.env.URL_API;
 
-  console.log(process.env.URL_API);
-
   const colorSides = [
     { name: 'Victoria', hex: 0x564787, hexStr: '#564787' },
     { name: 'Lola', hex: 0xDBCBD8, hexStr: '#DBCBD8' },
