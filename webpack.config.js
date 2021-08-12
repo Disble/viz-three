@@ -95,7 +95,7 @@ module.exports = {
     }),
     new Dotenv(),
     new CleanWebpackPlugin(),
-    new webpack.EnvironmentPlugin(['URL_API', 'NODE_TLS_REJECT_UNAUTHORIZED'])
+    new webpack.EnvironmentPlugin(['URL_API'])
   ],
   optimization: {
     minimize: true,
